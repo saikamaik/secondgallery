@@ -21,13 +21,14 @@
     <string name="birthday">Birthday</string>
     <string name="email2">Email<font color='#FF0000'>*</font></string>
     <string name="password2">Password<font color='#FF0000'>*</font></string>
-    <string name="confirm_password">Confirm Password<font color='#FF0000'>*</font></string>
+    <string name="confirm_password2">Confirm Password<font color='#FF0000'>*</font></string>
     <string name="save">Save</string>
     <string name="personal_data">Personal data</string>
-    <string name="e_mail_adress">E-mail adress</string>
+    <string name="e_mail_adress">E-mail address</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="you_can_delete_your_account">You can delete your account</string>
     <string name="sign_out">Sign Out</string>
+    <string name="popular">Popular</string>
 </resources>

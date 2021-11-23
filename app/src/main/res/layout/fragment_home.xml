@@ -17,42 +17,48 @@
         android:iconifiedByDefault="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:iconifiedByDefault="false"
+        />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
+        android:id="@+id/tab_layout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:tabGravity="fill"
-        app:tabMode= "fixed"
         app:tabSelectedTextColor="@color/black"
         app:tabIndicatorColor="#CF497E"
-        app:layout_constraintTop_toBottomOf="@id/search_bar"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="5dp"
         app:tabTextColor="@color/black"
-        android:background="@color/white"
-        >
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItem_new"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="New"
-            android:layout_marginTop="15dp"/>
+        app:tabMode="fixed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar"
+        tools:ignore="MissingConstraints">
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItem_popular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/popular"
-            android:layout_marginTop="15dp"/>
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:id="@+id/tabItem_new"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="New"-->
+<!--            android:layout_marginTop="15dp"/>-->
+
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:id="@+id/tabItem_popular"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/popular"-->
+<!--            android:layout_marginTop="15dp"/>-->
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/tabs_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_centerInParent="true"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
+        app:layout_constraintTop_toBottomOf="@id/tab_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

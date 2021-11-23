@@ -13,6 +13,7 @@ import com.example.secondgallery.adapter.PaginationScrollListener
 import com.example.secondgallery.adapter.RecyclerAdapter
 import com.example.secondgallery.presentation.ImageDetailFragment
 import moxy.MvpAppCompatFragment
+import kotlin.random.Random
 
 abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String): BaseView,
     MvpAppCompatFragment() {
@@ -23,7 +24,6 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
     lateinit var progressBar: ProgressBar
     lateinit var placeholder: View
     private lateinit var adapter: RecyclerAdapter
-
 
     override fun initRecyclerView(photos: ArrayList<PhotoModel>) {
         adapter = RecyclerAdapter(photos, object : RecyclerAdapter.MyViewHolder.Callback {

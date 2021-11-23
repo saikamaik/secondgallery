@@ -18,9 +18,9 @@ class GatewayModule {
         return RetrofitPhotoGateway(api)
     }
 
-    @Provides
-    @Singleton
-    fun provideLoginGateway(api: GalleryApi): LoginGateway {
-        return RetrofitLoginGateway(api)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideLoginGateway(api: GalleryApi): LoginGateway {
+//        return RetrofitLoginGateway(api)
+//    }
 }

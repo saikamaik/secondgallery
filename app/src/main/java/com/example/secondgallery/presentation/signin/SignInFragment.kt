@@ -5,32 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
-import com.di.ApiModule
 import com.example.domain.entity.login.AuthModel
-import com.example.domain.entity.login.LoginResponse
 import com.example.domain.entity.login.User
 import com.example.domain.gateway.LoginGateway
-import com.example.gateway.remoteDataSource.GalleryApi
 import com.example.secondgallery.R
 import com.example.secondgallery.authorization.SessionManager
 import com.example.secondgallery.di.RetrofitModule
+import com.example.secondgallery.presentation.homePage.HomeFragment
+import com.example.secondgallery.presentation.signup.SignUpFragment
 import com.example.secondgallery.presentation.welcome.WelcomeFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import moxy.InjectViewState
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.create
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class SignInFragment : Fragment() {
 
     private val welcomeFragment = WelcomeFragment()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    private lateinit var edittextUsername: EditText
-    private lateinit var edittextPassword: EditText
+    private lateinit var toolBarTextView: TextView
+    private lateinit var usernameEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var signInButton: AppCompatButton
+    private lateinit var signUpButton: AppCompatButton
     private lateinit var sessionManager: SessionManager
     private lateinit var retrofitModule: RetrofitModule
     lateinit var loginGateway: LoginGateway
@@ -46,21 +46,42 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        edittextUsername = view.findViewById(R.id.et_username)
-        edittextPassword = view.findViewById(R.id.et_password)
+        requireActivity().navigationView.visibility = View.GONE
 
-        var username: String = edittextUsername.text.toString()
-        var password: String = edittextPassword.text.toString()
+        usernameEditText = view.findViewById(R.id.et_username)
+        passwordEditText = view.findViewById(R.id.et_password)
+
+        signInButton = view.findViewById(R.id.button_sign_in)
+        signUpButton = view.findViewById(R.id.button_sign_up)
+
+        var username: String = usernameEditText.text.toString()
+        var password: String = passwordEditText.text.toString()
+
 
         toolbar = view.findViewById(R.id.toolbar_cancel)
-        toolbar.setNavigationOnClickListener{
-            fragmentManager?.beginTransaction()
-                ?.replace(R.id.fl_container, welcomeFragment)
-                ?.commit()
+        toolBarTextView = view.findViewById(R.id.tv_toolbar)
+        toolBarTextView.setOnClickListener{
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fl_container, welcomeFragment)
+                .commit()
 
-            retrofitModule = RetrofitModule()
-            sessionManager = activity?.let { it1 -> SessionManager(it1) }!!
+//            retrofitModule = RetrofitModule()
+//            sessionManager = activity?.let { it1 -> SessionManager(it1) }!!
 
+        }
+
+        signUpButton.setOnClickListener {
+            val signUpFragment = SignUpFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fl_container, signUpFragment)
+                .commit()
+        }
+
+        signInButton.setOnClickListener {
+            val homeFragment = HomeFragment()
+//            childFragmentManager.beginTransaction()
+//                .replace(R.id.fl_container, homeFragment)
+//                .commit()
         }
 
     }

@@ -31,4 +31,5 @@
     <string name="you_can_delete_your_account">You can delete your account</string>
     <string name="sign_out">Sign Out</string>
     <string name="popular">Popular</string>
+    <string name="_999">+999</string>
 </resources>

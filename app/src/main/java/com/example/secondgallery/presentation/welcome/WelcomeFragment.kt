@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.secondgallery.R
 import com.example.secondgallery.presentation.signin.SignInFragment
 import com.example.secondgallery.presentation.signup.SignUpFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import moxy.MvpAppCompatFragment
 
 class WelcomeFragment: Fragment() {
@@ -27,19 +29,19 @@ class WelcomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        signUpButton = signUpButton.findViewById(R.id.button_sign_up)
-        signInButton = signInButton.findViewById(R.id.button_sign_in)
+        signUpButton = view.findViewById(R.id.button_sign_up)
+        signInButton = view.findViewById(R.id.button_sign_in)
 
         signUpButton.setOnClickListener {
             val signUpFragment = SignUpFragment()
-            childFragmentManager.beginTransaction()
+            parentFragmentManager.beginTransaction()
                 .replace(R.id.fl_container, signUpFragment)
                 .commit()
         }
 
         signInButton.setOnClickListener {
             val signInFragment = SignInFragment()
-            childFragmentManager.beginTransaction()
+            parentFragmentManager.beginTransaction()
                 .replace(R.id.fl_container, signInFragment)
                 .commit()
         }

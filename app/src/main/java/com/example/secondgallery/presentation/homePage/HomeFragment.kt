@@ -1,10 +1,13 @@
 package com.example.secondgallery.presentation.homePage
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.secondgallery.R
@@ -36,6 +39,7 @@ class HomeFragment: Fragment() {
         var tabTitle = arrayOf("New", "Popular")
 
         searchView = view.findViewById(R.id.search_bar)
+        searchView.queryHint = "Search"
 
         adapter = TabsPagerAdapter(this)
         viewPager = view.findViewById(R.id.tabs_viewpager)

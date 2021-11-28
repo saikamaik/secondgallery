@@ -11,9 +11,11 @@ import com.example.domain.entity.PhotoModel
 import com.example.secondgallery.R
 import com.example.secondgallery.adapter.PaginationScrollListener
 import com.example.secondgallery.adapter.RecyclerAdapter
-import com.example.secondgallery.presentation.ImageDetailFragment
+import com.example.secondgallery.presentation.imageDetail.ImageDetailFragment
 import moxy.MvpAppCompatFragment
-import kotlin.random.Random
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String): BaseView,
     MvpAppCompatFragment() {
@@ -79,16 +81,25 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
         }
     }
 
+
+    @Throws(ParseException::class)
+    open fun convertToDateAndTime(date: String): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val output = SimpleDateFormat("dd-mm-yyyy", Locale.getDefault())
+        val d = sdf.parse(date)
+        return output.format(d)
+    }
+
     override fun navigateToImageDetailFragment(photoModel: PhotoModel) {
-        val imageDetailFragment = ImageDetailFragment()
         val args = Bundle()
         args.putString("imageName", photoModel.name)
+        args.putString("imageDateCreate", convertToDateAndTime(photoModel.dateCreate))
         args.putString("imageDescription", photoModel.description)
         args.putString("imageLink", photoModel.image.name)
-        imageDetailFragment.arguments = args
+        ImageDetailFragment().arguments = args
         parentFragmentManager
             .beginTransaction()
-            .add(R.id.fl_container, imageDetailFragment)
+            .add(R.id.fl_container, ImageDetailFragment())
             .addToBackStack(null)
             .commit()
     }

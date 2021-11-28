@@ -1,6 +1,7 @@
 package com.example.secondgallery
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.secondgallery.presentation.homePage.HomeFragment
 import com.example.secondgallery.presentation.welcome.WelcomeFragment
@@ -34,11 +35,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            openFragment(homeFragment)
-        }
-
         val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        if (savedInstanceState == null) {
+            bottomNavigation.visibility = View.GONE
+            openFragment(welcomeFragment)
+        }
+
     }
 }

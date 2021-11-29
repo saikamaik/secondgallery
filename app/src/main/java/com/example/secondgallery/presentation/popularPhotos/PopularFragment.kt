@@ -10,7 +10,7 @@ import com.example.secondgallery.presentation.basemvp.BaseFragment
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-
+// TODO Лучше создать enum class для типов new и popular
 class PopularFragment : PopularView, BaseFragment<PopularView, PopularPresenter>("popular") {
 
         @InjectPresenter
@@ -44,7 +44,7 @@ class PopularFragment : PopularView, BaseFragment<PopularView, PopularPresenter>
 
             progressBar = requireView().findViewById(R.id.progressbar)
         }
-
+        // TODO Отступы
 
 
     }

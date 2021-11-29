@@ -70,8 +70,8 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
         }
     }
 
-    override fun changePlaceholderVisibility(IsNetworkAvailable: Boolean) {
-        if (IsNetworkAvailable) {
+    override fun changePlaceholderVisibility(isNetworkAvailable: Boolean) {
+        if (isNetworkAvailable) {
             recyclerView.visibility = View.VISIBLE
             placeholder.visibility = View.GONE
         } else {
@@ -83,7 +83,9 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
 
 
     @Throws(ParseException::class)
+    // Зачем open
     open fun convertToDateAndTime(date: String): String {
+        // TODO Вот эти штуки лучше выносить в отдельные классы-утилиты (если что, подойдёшь, расскажу)
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val output = SimpleDateFormat("dd-mm-yyyy", Locale.getDefault())
         val d = sdf.parse(date)
@@ -92,6 +94,8 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
 
     override fun navigateToImageDetailFragment(photoModel: PhotoModel) {
         val args = Bundle()
+
+        // TODO выносить в константы строки
         args.putString("imageName", photoModel.name)
         args.putString("imageDateCreate", convertToDateAndTime(photoModel.dateCreate))
         args.putString("imageDescription", photoModel.description)

@@ -14,7 +14,10 @@ import javax.inject.Singleton
 @Module(includes = [ContextModule::class])
 class RetrofitModule {
 
+    // TODO Желательно хранить не в поле, а константах
     private val BASE_URL: String = "http://gallery.dev.webant.ru/api/"
+
+    // TODO Подключи Chuck Interceptor
 
     @Provides
     @Singleton

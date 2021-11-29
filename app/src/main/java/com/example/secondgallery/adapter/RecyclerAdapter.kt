@@ -19,7 +19,6 @@ class RecyclerAdapter(
         val itemView = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_recycler_view, parent, false)
-
         return MyViewHolder(itemView, callback)
     }
 
@@ -32,6 +31,7 @@ class RecyclerAdapter(
     class MyViewHolder(listItemView: View, private val callback: Callback) :
         RecyclerView.ViewHolder(listItemView) {
 
+        // TODO Желательно объявлять коллбек на уровне adapter'a
         interface Callback {
             fun onImageClicked(item: PhotoModel)
         }

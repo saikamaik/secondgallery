@@ -33,7 +33,7 @@ class SignUpFragment: Fragment() {
     private lateinit var passwordEditText: EditText
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var confirmPasswordTextInputLayout: TextInputLayout
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar // TODO Старайся не использовать полные пути к классам
     private lateinit var validate: Validator
 
     override fun onCreateView(
@@ -77,6 +77,7 @@ class SignUpFragment: Fragment() {
         }
 
         signInButton.setOnClickListener {
+            // TODO navigation component
             val signInFragment = SignInFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fl_container, signInFragment)
@@ -89,7 +90,7 @@ class SignUpFragment: Fragment() {
             if (confirmPasswordEditText.text.toString() != passwordEditText.text.toString()) {
                 confirmPasswordTextInputLayout.error = "Пароли не совпадают"
             } else if (validate.validateEmail(emailEditText)
-                    and validate.validatePassword(passwordEditText)
+                    and validate.validatePassword(passwordEditText) // TODO желательно использовать && и ||
                     and validate.validateUsername(usernameEditText)
                 ) {
                     val homeFragment = HomeFragment()

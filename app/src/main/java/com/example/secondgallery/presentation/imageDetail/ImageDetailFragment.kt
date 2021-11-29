@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.secondgallery.R
 import com.squareup.picasso.Picasso
 
+// TODO проверить форматирование всех файлов
 class ImageDetailFragment : Fragment() {
 
     override fun onCreateView(
@@ -22,13 +23,17 @@ class ImageDetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_photoinfo, container, false)
     }
 
+
+    // TODO желательно иметь много маленьких методов, вместо одного большого
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val toolbar: Toolbar = view.findViewById(R.id.toolbar) as Toolbar
 
+        // TODO Перечёркнутое = deprecated, старайся не использовать депрекейтед
         toolbar.setNavigationOnClickListener{ fragmentManager?.beginTransaction()?.remove(this)?.commit()}
 
+        // TODO вынести все строки в константы
         val imgLink : String? = arguments?.getString("imageLink")
         val img: ImageView = view.findViewById(R.id.image_detail)
 
@@ -42,7 +47,7 @@ class ImageDetailFragment : Fragment() {
         imgName.text = arguments?.getString("imageName")
         Glide
             .with(this)
-            .load("http://gallery.dev.webant.ru/media/$imgLink")
+            .load("http://gallery.dev.webant.ru/media/$imgLink") // TODO вынести ссылку в константы
             .into(img)
 
     }

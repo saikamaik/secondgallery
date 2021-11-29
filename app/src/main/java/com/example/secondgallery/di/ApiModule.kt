@@ -1,4 +1,4 @@
-package com.di
+package com.di // TODO следи за пакетами
 
 import dagger.Module
 import dagger.Provides

@@ -2,6 +2,7 @@ package com.example.secondgallery
 
 import android.util.Patterns
 import android.widget.EditText
+import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 
 class Validator {
@@ -15,17 +16,30 @@ class Validator {
                 "$"
     )
 
+    fun validateUsername(usernameEditText: EditText): Boolean {
+        val username: String = usernameEditText.text.toString()
+
+        return if (username.isEmpty()) {
+            setError(usernameEditText, "Поле не может быть пустым")
+            false
+        } else {
+            setError(usernameEditText, null)
+            true
+        }
+
+    }
+
     fun validateEmail(emailEditText: EditText): Boolean {
         val email: String = emailEditText.text.toString()
 
         return if (email.isEmpty()) {
-            emailEditText.error = "Поле не может быть пустым"
+            setError(emailEditText, "Поле не может быть пустым")
             false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.error = "E-mail введен некорректно"
+            setError(emailEditText, "E-mail введен некорректно")
             false
         } else {
-            emailEditText.error = null
+            setError(emailEditText, null)
             true
         }
     }
@@ -34,15 +48,20 @@ class Validator {
         val password: String = passwordEditText.text.toString()
 
         return if (password.isEmpty()) {
-            passwordEditText.error = "Поле не может быть пустым"
+            setError(passwordEditText,"Поле не может быть пустым")
             false
         } else if (!passwordPattern.matcher(password).matches()) {
-            passwordEditText.error = "Слабый пароль"
+            setError(passwordEditText,"Слабый пароль")
             false
         } else {
-            passwordEditText.error = null
+            setError(passwordEditText, null)
             true
         }
     }
 
+    private fun setError(data: EditText, error: String?) {
+        if (data.parent.parent is TextInputLayout) {
+            (data.parent.parent as TextInputLayout).error = error
+        }
+    }
 }

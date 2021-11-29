@@ -13,10 +13,10 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import com.example.secondgallery.R
 import com.example.secondgallery.Validator
-import com.example.secondgallery.databinding.ActivityMainBinding
 import com.example.secondgallery.presentation.homePage.HomeFragment
 import com.example.secondgallery.presentation.signin.SignInFragment
 import com.example.secondgallery.presentation.welcome.WelcomeFragment
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.regex.Pattern
@@ -32,9 +32,9 @@ class SignUpFragment: Fragment() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var confirmPasswordEditText: EditText
+    private lateinit var confirmPasswordTextInputLayout: TextInputLayout
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var validate: Validator
-    lateinit var binding: ActivityMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +57,8 @@ class SignUpFragment: Fragment() {
         passwordEditText = view.findViewById(R.id.et_password)
         confirmPasswordEditText = view.findViewById(R.id.et_confirm_password)
 
+        confirmPasswordTextInputLayout = view.findViewById(R.id.tl_confirm_password)
+
         signInButton = view.findViewById(R.id.button_sign_in)
         signUpButton = view.findViewById(R.id.button_sign_up)
 
@@ -66,27 +68,11 @@ class SignUpFragment: Fragment() {
         val password: String = passwordEditText.text.toString()
         val confirmPassword: String = confirmPasswordEditText.text.toString()
 
-        if (confirmPassword != password) {
-            confirmPasswordEditText.error = "Пароли не совпадают"
-        }
-
-        if (!validate.validateEmail(emailEditText) or !validate.validatePassword(passwordEditText))
-        {
-            return
-        }
-
         toolbar = view.findViewById(R.id.toolbar_cancel)
         toolBarTextView = view.findViewById(R.id.tv_toolbar)
         toolBarTextView.setOnClickListener{
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fl_container, welcomeFragment)
-                .commit()
-        }
-
-        signUpButton.setOnClickListener {
-            val homeFragment = HomeFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, homeFragment)
                 .commit()
         }
 
@@ -97,7 +83,23 @@ class SignUpFragment: Fragment() {
                 .commit()
         }
 
+
+        signUpButton.setOnClickListener {
+
+            if (confirmPasswordEditText.text.toString() != passwordEditText.text.toString()) {
+                confirmPasswordTextInputLayout.error = "Пароли не совпадают"
+            } else if (validate.validateEmail(emailEditText)
+                    and validate.validatePassword(passwordEditText)
+                    and validate.validateUsername(usernameEditText)
+                ) {
+                    val homeFragment = HomeFragment()
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fl_container, homeFragment)
+                        .commit()
+                }
+            }
+        }
+
+
     }
 
-
-}

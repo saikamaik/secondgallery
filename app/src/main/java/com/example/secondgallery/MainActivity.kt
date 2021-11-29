@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigation.visibility = View.GONE
 
         if (savedInstanceState == null) {
-            bottomNavigation.visibility = View.GONE
             openFragment(welcomeFragment)
         }
 

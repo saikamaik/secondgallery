@@ -27,7 +27,7 @@ class SignInFragment : Fragment() {
     private val welcomeFragment = WelcomeFragment()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var toolBarTextView: TextView
-    private lateinit var usernameEditText: EditText
+    private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var signInButton: AppCompatButton
     private lateinit var signUpButton: AppCompatButton
@@ -48,15 +48,14 @@ class SignInFragment : Fragment() {
 
         requireActivity().navigationView.visibility = View.GONE
 
-        usernameEditText = view.findViewById(R.id.et_username)
+        emailEditText = view.findViewById(R.id.et_email)
         passwordEditText = view.findViewById(R.id.et_password)
 
         signInButton = view.findViewById(R.id.button_sign_in)
         signUpButton = view.findViewById(R.id.button_sign_up)
 
-        var username: String = usernameEditText.text.toString()
+        var email: String = emailEditText.text.toString()
         var password: String = passwordEditText.text.toString()
-
 
         toolbar = view.findViewById(R.id.toolbar_cancel)
         toolBarTextView = view.findViewById(R.id.tv_toolbar)
@@ -79,9 +78,9 @@ class SignInFragment : Fragment() {
 
         signInButton.setOnClickListener {
             val homeFragment = HomeFragment()
-//            childFragmentManager.beginTransaction()
-//                .replace(R.id.fl_container, homeFragment)
-//                .commit()
+            childFragmentManager.beginTransaction()
+                .replace(R.id.fl_container, homeFragment)
+                .commit()
         }
 
     }

@@ -14,6 +14,7 @@ import com.example.secondgallery.R
 import com.example.secondgallery.tabs.TabsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 private const val ARG_OBJECT = "object"
@@ -35,6 +36,8 @@ class HomeFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().navigationView.visibility = View.VISIBLE
 
         var tabTitle = arrayOf("New", "Popular")
 

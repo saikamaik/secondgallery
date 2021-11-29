@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
@@ -31,19 +29,18 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_cancel"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_sign_up"
+        android:id="@+id/tv_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="100dp"
-        android:elevation="2dp"
         android:text="@string/sign_up"
         android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_cancel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        android:elevation="2dp"/>
 
     <View
         android:layout_width="94dp"
@@ -51,121 +48,165 @@
         android:background="#CF497E"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_sign_up"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_sign_in"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_username"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tl_username"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:inputType="textPersonName"
-        android:hint="@string/user_name"
-        android:textColor="@color/black"
-        android:textColorHint="@color/gray"
-        android:drawableEnd="@drawable/icon_person"
-        android:background="@drawable/edittext_box"
-        app:layout_constraintTop_toBottomOf="@id/tv_sign_up"
-        />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_birthday"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:inputType="date"
-        android:hint="@string/birthday"
-        android:textColorHint="@color/gray"
-        android:drawableEnd="@drawable/icon_calendar"
-        android:background="@drawable/edittext_box"
-        app:layout_constraintTop_toBottomOf="@id/et_username"
-        />
+        app:hintEnabled="false"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:boxStrokeErrorColor="#E80000"
+        app:boxStrokeColor="@color/gray"
+        style="@style/MyEditTextOutlined"
+        app:layout_constraintTop_toBottomOf="@id/tv_sign_in">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_email"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:textSize="17sp"
+            android:layout_marginTop="57dp"
+            android:paddingEnd="10dp"
+            android:inputType="textPersonName"
+            android:hint="@string/user_name"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:drawableEnd="@drawable/icon_person"
+            android:paddingStart="10dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tl_birthday"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:hintEnabled="false"
+        style="@style/MyEditTextOutlined"
+        app:boxStrokeColor="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tl_username">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            app:layout_constraintTop_toBottomOf="@id/tl_username"
+            android:layout_marginTop="29dp"
+            android:textSize="17sp"
+            android:inputType="date"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:paddingEnd="10dp"
+            android:hint="@string/birthday"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:drawableEnd="@drawable/icon_calendar"
+            android:paddingStart="10dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tl_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:inputType="textEmailAddress"
-        android:hint="@string/email2"
-        android:textColorHint="@color/gray"
-        android:drawableEnd="@drawable/icon_email"
-        android:background="@drawable/edittext_box"
-        app:layout_constraintTop_toBottomOf="@id/et_birthday"
-        />
+        app:hintEnabled="false"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:boxStrokeErrorColor="#E80000"
+        app:boxStrokeColor="@color/gray"
+        style="@style/MyEditTextOutlined"
+        app:layout_constraintTop_toBottomOf="@id/tl_birthday">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textSize="17sp"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email2"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:drawableEnd="@drawable/icon_email"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tl_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="@string/password2"
-        android:textColorHint="@color/gray"
-        app:boxStrokeColor="@color/gray"
         app:passwordToggleEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:layout_constraintTop_toBottomOf="@id/et_email">
+        app:hintEnabled="false"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:boxStrokeErrorColor="#E80000"
+        app:boxStrokeColor="@color/gray"
+        app:passwordToggleDrawable="@drawable/icon_eye"
+        style="@style/MyEditTextOutlined"
+        app:layout_constraintTop_toBottomOf="@id/tl_email">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:paddingStart="10dp"
             android:inputType="textPassword"
-            tools:ignore="RtlSymmetry" />
-
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:drawableEnd="@drawable/icon_eye"
+            android:paddingEnd="10dp"
+            android:hint="@string/password2"
+            android:paddingStart="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tl_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:textColorHint="@color/gray"
-        android:hint="@string/confirm_password2"
-        app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="@color/gray"
+        android:layout_marginTop="10dp"
+        app:hintEnabled="false"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:boxStrokeErrorColor="#E80000"
         app:passwordToggleEnabled="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:boxStrokeColor="@color/gray"
+        app:passwordToggleDrawable="@drawable/icon_eye"
+        style="@style/MyEditTextOutlined"
         app:layout_constraintTop_toBottomOf="@id/tl_password">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:textCursorDrawable="@color/black"
-            android:textSize="17sp"
             android:inputType="textPassword"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:paddingEnd="10dp"
+            android:hint="@string/confirm_password2"
             android:paddingStart="10dp"/>
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_sign_up"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="31dp"
+        android:background="@drawable/rounded_corners_black"
         android:text="@string/sign_up"
         android:textAllCaps="false"
         android:textSize="18sp"
         android:textColor="@color/white"
-        android:background="@drawable/rounded_corners_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tl_confirm_password"/>
@@ -176,14 +217,16 @@
         android:layout_height="wrap_content"
         android:text="@string/sign_in"
         android:gravity="center"
-        android:layout_marginTop="10dp"
         android:textAllCaps="false"
+        android:layout_marginTop="19dp"
         android:textSize="18sp"
         android:textColor="@color/black"
+        android:background="@color/white"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_sign_up"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

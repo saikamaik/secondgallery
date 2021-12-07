@@ -2,33 +2,67 @@ package com.example.secondgallery.presentation.basemvp
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.annotation.CallSuper
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewbinding.ViewBinding
 import com.example.domain.entity.PhotoModel
 import com.example.secondgallery.R
+import com.example.secondgallery.SearchViewModel
 import com.example.secondgallery.adapter.PaginationScrollListener
 import com.example.secondgallery.adapter.RecyclerAdapter
 import com.example.secondgallery.presentation.imageDetail.ImageDetailFragment
+import com.example.secondgallery.utils.DateUtils
 import moxy.MvpAppCompatFragment
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String): BaseView,
+const val IMAGE_NAME = "imageName"
+const val IMAGE_DATE_CREATION = "imageDateCreate"
+const val IMAGE_DESCRIPTION = "imageDescription"
+const val IMAGE_LINK = "imageLink"
+const val IMAGE_USERNAME = "imageUsername"
+
+abstract class BaseFragment<V : BaseView, P : BasePresenter<V>, VB : ViewBinding>(var type: String) :
+    BaseView,
     MvpAppCompatFragment() {
 
     protected abstract val presenter: P
+//    open lateinit var searchViewModel: SearchViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var progressBar: ProgressBar
     lateinit var placeholder: View
     private lateinit var adapter: RecyclerAdapter
 
+    var _binding: VB? = null
+    val binding: VB
+        get() = _binding!!
+
+    @CallSuper
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = initializeBinding()
+        return binding.root
+    }
+
+    abstract fun initializeBinding(): VB
+
     override fun initRecyclerView(photos: ArrayList<PhotoModel>) {
-        adapter = RecyclerAdapter(photos, object : RecyclerAdapter.MyViewHolder.Callback {
+        adapter = RecyclerAdapter(photos, object : RecyclerAdapter.Callback {
             override fun onImageClicked(item: PhotoModel) {
                 presenter.onImageClicked(item)
             }
@@ -40,7 +74,8 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
         }
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter
-        adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        adapter.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         recyclerView.setHasFixedSize(true)
 
         recyclerView.addOnScrollListener(object : PaginationScrollListener(linearLayoutManager) {
@@ -81,30 +116,15 @@ abstract class BaseFragment<V : BaseView, P: BasePresenter<V>>(var type: String)
         }
     }
 
-
-    @Throws(ParseException::class)
-    // Зачем open
-    open fun convertToDateAndTime(date: String): String {
-        // TODO Вот эти штуки лучше выносить в отдельные классы-утилиты (если что, подойдёшь, расскажу)
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val output = SimpleDateFormat("dd-mm-yyyy", Locale.getDefault())
-        val d = sdf.parse(date)
-        return output.format(d)
-    }
-
     override fun navigateToImageDetailFragment(photoModel: PhotoModel) {
         val args = Bundle()
-
-        // TODO выносить в константы строки
-        args.putString("imageName", photoModel.name)
-        args.putString("imageDateCreate", convertToDateAndTime(photoModel.dateCreate))
-        args.putString("imageDescription", photoModel.description)
-        args.putString("imageLink", photoModel.image.name)
+        args.putString(IMAGE_NAME, photoModel.name)
+        args.putString(IMAGE_DATE_CREATION, DateUtils.checkDateFormat(photoModel.dateCreate))
+        args.putString(IMAGE_DESCRIPTION, photoModel.description)
+        args.putString(IMAGE_LINK, photoModel.image.name)
+        args.putString(IMAGE_USERNAME, photoModel.user)
         ImageDetailFragment().arguments = args
-        parentFragmentManager
-            .beginTransaction()
-            .add(R.id.fl_container, ImageDetailFragment())
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(R.id.imageDetailFragment, args)
     }
+
 }

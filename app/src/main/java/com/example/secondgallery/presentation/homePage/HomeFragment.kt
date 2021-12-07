@@ -19,14 +19,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
-
-private const val ARG_OBJECT = "object"
-
 class HomeFragment : Fragment() {
 
     private lateinit var adapter: TabsPagerAdapter
-    private lateinit var viewPager: ViewPager2
-    private lateinit var searchViewModel: SearchViewModel
 
     private var _binding: FragmentHomeBinding? = null
     private val binding
@@ -36,7 +31,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,8 +39,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var newFragment: NewFragment = NewFragment()
-        var popularFragment = PopularFragment()
+        val newFragment: NewFragment = NewFragment()
+        val popularFragment = PopularFragment()
 
         requireActivity().navigationView.visibility = View.VISIBLE
 
@@ -59,13 +54,6 @@ class HomeFragment : Fragment() {
             tab.text = tabTitle[position]
         }.attach()
 
-        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
-//        searchViewModel.getQuery()?.observe(viewLifecycleOwner, Observer<String>() {
-//            if (it != null) {
-//                searchViewModel.setQuery(newText)
-//            }
-//        })
-
         val searchView = search_bar as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -74,12 +62,11 @@ class HomeFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    searchViewModel.setQuery(newText)
-//                    if (tab_layout.selectedTabPosition == 0 ) {
-//                        newFragment.searchViewModel.getQuery()
-//                    } else if (tab_layout.selectedTabPosition == 1) {
-//                        popularFragment.searchViewModel.getQuery()
-//                    }
+                    if (tab_layout.selectedTabPosition == 0 ) {
+                        newFragment.getSearchablePhotos(newText)
+                    } else if (tab_layout.selectedTabPosition == 1) {
+                        popularFragment.getSearchablePhotos(newText)
+                    }
                 }
                 return true;
             }

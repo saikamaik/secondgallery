@@ -6,7 +6,7 @@ import moxy.viewstate.strategy.StateStrategyType
 
 interface NewView : BaseView {
 
-//    @StateStrategyType(AddToEndSingleStrategy::class)
-//    fun getSearchablePhotos(name: String)
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun getSearchablePhotos(name: String)
 
 }

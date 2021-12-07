@@ -11,12 +11,8 @@ class TabsPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> {
-                NewFragment()
-            }
-            1 -> {
-                PopularFragment()
-            }
+            0 -> NewFragment()
+            1 -> PopularFragment()
             else -> NewFragment()
         }
     }

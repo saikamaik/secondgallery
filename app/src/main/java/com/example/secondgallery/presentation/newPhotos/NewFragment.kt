@@ -1,15 +1,8 @@
 package com.example.secondgallery.presentation.newPhotos
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.example.secondgallery.App
 import com.example.secondgallery.R
-import com.example.secondgallery.SearchViewModel
 import com.example.secondgallery.databinding.FragmentNewBinding
-import com.example.secondgallery.databinding.FragmentPopularBinding
 import com.example.secondgallery.presentation.basemvp.BaseFragment
 import com.example.secondgallery.utils.PhotoType
 import moxy.presenter.InjectPresenter
@@ -18,19 +11,11 @@ import moxy.presenter.ProvidePresenter
 class NewFragment : BaseFragment<NewView, NewPresenter, FragmentNewBinding>(PhotoType.New.raw),
     NewView {
 
-    @InjectPresenter
-    override lateinit var presenter: NewPresenter
-
     @ProvidePresenter
     fun providePresenter(): NewPresenter = App.appComponent.provideNewPresenter()
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        return inflater.inflate(R.layout.fragment_new, container, false)
-//    }
+    @InjectPresenter
+    override lateinit var presenter: NewPresenter
 
     override fun initializeBinding(): FragmentNewBinding {
         return FragmentNewBinding.inflate(layoutInflater)
@@ -46,7 +31,7 @@ class NewFragment : BaseFragment<NewView, NewPresenter, FragmentNewBinding>(Phot
             presenter.onSwipeRefresh()
         }
 
-        swipeRefreshLayout.setColorScheme(
+        swipeRefreshLayout.setColorScheme( // todo
             R.color.white,
             R.color.black
         )
@@ -54,8 +39,8 @@ class NewFragment : BaseFragment<NewView, NewPresenter, FragmentNewBinding>(Phot
         progressBar = requireView().findViewById(R.id.progressbar)
     }
 
-//    override fun getSearchablePhotos(name: String) {
-//        presenter.getData(this.searchViewModel.getQuery().toString())
-//    }
+    override fun getSearchablePhotos(name: String) {
+        presenter.getSearchPhotos(name)
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.secondgallery.utils
 
+import android.annotation.SuppressLint
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +28,7 @@ object DateUtils {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     @JvmStatic
     public fun convertFromStringToDate(date: String?) : Date? {
         if (date!=null) return null

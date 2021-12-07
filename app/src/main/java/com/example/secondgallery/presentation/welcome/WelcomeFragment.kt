@@ -17,11 +17,12 @@ class WelcomeFragment : Fragment() {
     private val binding
         get() = _binding!!
 
+    // todo Можно вынести в BaseFragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View? { // todo Лучше избавляться от желтухи
         _binding = FragmentWelcomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,6 +30,8 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // todo Желательно держать этот метод максимально чистым
+        // todo Ты можешь вынести эти листенеры в какие-нибудь методы типа setupListeners()
         button_sign_up.setOnClickListener {
             findNavController().navigate(R.id.signUpFragment)
         }

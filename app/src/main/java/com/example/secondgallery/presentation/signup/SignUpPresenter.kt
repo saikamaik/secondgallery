@@ -1,13 +1,10 @@
 package com.example.secondgallery.presentation.signup
 
-import android.app.Application
 import android.content.Context
 import com.example.domain.entity.login.AuthModel
 import com.example.domain.entity.login.User
 import com.example.domain.gateway.LoginGateway
 import com.example.secondgallery.authorization.SessionManager
-import com.example.secondgallery.presentation.signin.SignInPresenter
-import com.example.secondgallery.presentation.signin.SignInView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -18,12 +15,20 @@ import javax.inject.Inject
 @InjectViewState
 class SignUpPresenter @Inject constructor(
     private val loginGateway: LoginGateway
-) :
-    MvpPresenter<SignUpView>() {
+) : MvpPresenter<SignUpView>() {
 
     private val compositeDisposable = CompositeDisposable()
 
     private lateinit var sessionManager: SessionManager
+
+    // todo Объединить все три метода в один, почитать про flatMap
+//    loginGateway.postUser()
+//    .flatMap {
+//        loginGateway.postClient("")
+//    }
+//    .flatMap {
+//        loginGateway.getLogin("", "", "", "")
+//    }
 
     fun postClient(user: User, context: Context) {
 
@@ -31,15 +36,11 @@ class SignUpPresenter @Inject constructor(
 
         loginGateway.postClient(
             user.username
-        )
-            .subscribeOn(Schedulers.io())
+        ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess {
-
-            }
             .subscribe( {
                 authModel =
-                    AuthModel("${it.id}_${it.randomId}", user.username, user.password!!, it.secret)
+                    AuthModel("${it.id}_${it.randomId}", user.username, user.password!!, it.secret) // todo !!!!!!!!!
                 login(authModel, context)
             }, {
                 it.printStackTrace()
@@ -73,7 +74,7 @@ class SignUpPresenter @Inject constructor(
         loginGateway.postUser(
             user.email,
             user.username,
-            user.password!!,
+            user.password!!, // todo Старайся обходиться без !!, опасная штука
             user.birthday,
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

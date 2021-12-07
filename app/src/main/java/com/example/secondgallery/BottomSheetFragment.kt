@@ -41,20 +41,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                val addPhotoFragment = AddPhotoFragment()
-//                val data: Intent? = result.data
-//                val imageUri: Uri
-//                val args = Bundle()
-//                if (data != null) {
-//                    imageUri = data.data!!
-//                    args.putString(IMAGE, imageUri.toString())
-//                    addPhotoFragment.arguments = args
-//                    findNavController().navigate(R.id.addPhotoFragment)
-//                }
-//            }
-//        }
 
         button_make_photo.setOnClickListener {
             ImagePicker.with(this)

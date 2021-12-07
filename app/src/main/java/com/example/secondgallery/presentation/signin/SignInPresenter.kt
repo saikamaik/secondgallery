@@ -27,6 +27,8 @@ class SignInPresenter @Inject constructor(
     private lateinit var sessionManager: SessionManager
     private val compositeDisposable = CompositeDisposable()
 
+    // todo То же самое, что и в регистрации
+
     fun postClient(user: User, context: Context) {
 
         var authModel: AuthModel

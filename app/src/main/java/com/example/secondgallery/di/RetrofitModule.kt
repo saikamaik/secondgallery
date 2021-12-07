@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+// todo
 const val BASE_URL: String = "http://gallery.dev.webant.ru/"
 
 @Module(includes = [ContextModule::class])

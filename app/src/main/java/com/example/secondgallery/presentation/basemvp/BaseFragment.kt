@@ -27,18 +27,22 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+// todo Константы лучше хранить либо в отдельных файлах, либо в компаньонах
 const val IMAGE_NAME = "imageName"
 const val IMAGE_DATE_CREATION = "imageDateCreate"
 const val IMAGE_DESCRIPTION = "imageDescription"
 const val IMAGE_LINK = "imageLink"
 const val IMAGE_USERNAME = "imageUsername"
 
-abstract class BaseFragment<V : BaseView, P : BasePresenter<V>, VB : ViewBinding>(var type: String) :
-    BaseView,
-    MvpAppCompatFragment() {
+// todo 1. Переименовать этот класс на что-то типа BasePhotoFragment
+// todo 2. Попробовать вынести базовую логику из этого фрагмента в BaseFragment
+abstract class BaseFragment<
+        V : BaseView,
+        P : BasePresenter<V>,
+        VB : ViewBinding
+>(var type: String) : BaseView, MvpAppCompatFragment() {
 
     protected abstract val presenter: P
-//    open lateinit var searchViewModel: SearchViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var progressBar: ProgressBar
@@ -67,12 +71,15 @@ abstract class BaseFragment<V : BaseView, P : BasePresenter<V>, VB : ViewBinding
                 presenter.onImageClicked(item)
             }
         })
+
+        // todo Можно вынести в метод onConfigurationChanged
         var linearLayoutManager = GridLayoutManager(this.context, 2)
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             linearLayoutManager = GridLayoutManager(this.context, 4)
         }
         recyclerView.layoutManager = linearLayoutManager
+        //
         recyclerView.adapter = adapter
         adapter.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY

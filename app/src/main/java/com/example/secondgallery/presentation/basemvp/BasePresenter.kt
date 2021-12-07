@@ -10,6 +10,7 @@ import moxy.MvpPresenter
 
 abstract class BasePresenter<V : BaseView>(
     private val context: Application,
+    // todo new и popular можно заменить на обычный enum class
     var new: String?,
     var popular: String?,
     val user: String? = null,
@@ -118,7 +119,9 @@ abstract class BasePresenter<V : BaseView>(
         getSearchPhotos(name)
     }
 
-    private fun getSearchPhotos (name: String) {
+    fun getSearchPhotos (name: String) {
+
+        photos.clear()
         photoGateway.getSearchablePhotos(name)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

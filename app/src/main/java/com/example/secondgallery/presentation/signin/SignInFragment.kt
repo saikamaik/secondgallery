@@ -1,8 +1,6 @@
 package com.example.secondgallery.presentation.signin
 
-import android.content.Context
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +9,6 @@ import com.example.domain.entity.login.User
 import com.example.secondgallery.App
 import com.example.secondgallery.R
 import com.example.secondgallery.databinding.FragmentSigninBinding
-import com.example.secondgallery.presentation.welcome.WelcomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_signin.*
 import moxy.MvpAppCompatFragment

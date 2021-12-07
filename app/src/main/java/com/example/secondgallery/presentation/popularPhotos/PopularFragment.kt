@@ -22,14 +22,6 @@ class PopularFragment : PopularView,
     @ProvidePresenter
     fun providePresenter(): PopularPresenter = App.appComponent.providePopularPresenter()
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        return inflater.inflate(R.layout.fragment_popular, container, false)
-//    }
-
     override fun initializeBinding(): FragmentPopularBinding {
         return FragmentPopularBinding.inflate(layoutInflater)
     }
@@ -52,8 +44,8 @@ class PopularFragment : PopularView,
         progressBar = requireView().findViewById(R.id.progressbar)
     }
 
-//    override fun getSearchablePhotos (name: String) {
-//        presenter.getData(name)
-//    }
+    override fun getSearchablePhotos(name: String) {
+        presenter.getSearchPhotos(name)
+    }
 
 }

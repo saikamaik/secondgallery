@@ -60,6 +60,7 @@ class Validator {
     }
 
     private fun setError(data: EditText, error: String?) {
+        // todo Попробуй заменить едит тексты на TextInputEditText, тогда не придётся выставлять ошибку паренту
         if (data.parent.parent is TextInputLayout) {
             (data.parent.parent as TextInputLayout).error = error
         }

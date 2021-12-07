@@ -11,8 +11,9 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class SettingsPresenter @Inject constructor(private val loginGateway: LoginGateway) :
-    MvpPresenter<SettingsView>() {
+class SettingsPresenter @Inject constructor(
+    private val loginGateway: LoginGateway
+) : MvpPresenter<SettingsView>() {
 
     private lateinit var sessionManager: SessionManager
     private val compositeDisposable = CompositeDisposable()
@@ -26,7 +27,7 @@ class SettingsPresenter @Inject constructor(private val loginGateway: LoginGatew
             .doOnSuccess {
                 viewState.setUpUI(it)
             }
-            .subscribe( {
+            .subscribe({
 
             }, {
                 it.printStackTrace()
@@ -41,7 +42,7 @@ class SettingsPresenter @Inject constructor(private val loginGateway: LoginGatew
         loginGateway.editUser(id = user.id!!, user.email, user.username, user.birthday)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe( {
+            .subscribe({
 
             }, {
                 it.printStackTrace()

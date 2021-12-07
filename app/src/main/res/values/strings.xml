@@ -38,4 +38,7 @@
     <string name="add">Add</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
+    <string name="make_photo">Make Photo</string>
+    <string name="select_in_gallery">Select in gallery</string>
+    <string name="select">Select:</string>
 </resources>

@@ -2,13 +2,12 @@ package com.example.secondgallery.authorization
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.secondgallery.R
-import com.example.secondgallery.presentation.signin.SignInFragment
 
 class SessionManager(context: Context) {
 
     // TODO shared preferences можно провайдить через DI
-    private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+    private var prefs: SharedPreferences =
+        context.getSharedPreferences("secondGallery", Context.MODE_PRIVATE)
 
     companion object {
         const val USER_TOKEN = "user_token"

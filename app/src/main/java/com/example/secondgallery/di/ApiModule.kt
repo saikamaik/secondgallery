@@ -1,9 +1,8 @@
-package com.di // TODO следи за пакетами
+package com.example.secondgallery.di
 
+import com.example.gateway.remoteDataSource.GalleryApi
 import dagger.Module
 import dagger.Provides
-import com.example.gateway.remoteDataSource.GalleryApi
-import com.example.secondgallery.di.RetrofitModule
 import retrofit2.Retrofit
 import javax.inject.Singleton
 

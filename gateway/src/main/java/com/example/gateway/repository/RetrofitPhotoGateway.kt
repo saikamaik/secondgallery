@@ -8,9 +8,13 @@ import javax.inject.Inject
 
 class RetrofitPhotoGateway @Inject constructor(
     private val api: GalleryApi
-    ): PhotoGateway {
+) : PhotoGateway {
 
-    override fun getPhotos(new: String?, popular: String?, page: Int): Single<APIResponse> {
-        return api.getPhotos(new, popular, page)
+    override fun getPhotos(new: String?, popular: String?, page: Int, user: String?): Single<APIResponse> {
+        return api.getPhotos(new, popular, page, user)
+    }
+
+    override fun getSearchablePhotos(name: String) : Single<APIResponse> {
+        return api.getSearchablePhotos(name)
     }
 }

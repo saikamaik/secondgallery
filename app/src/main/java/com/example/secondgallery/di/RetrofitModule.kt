@@ -2,6 +2,7 @@ package com.example.secondgallery.di
 
 import android.content.Context
 import com.example.secondgallery.authorization.AuthInterceptor
+import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -11,13 +12,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+const val BASE_URL: String = "http://gallery.dev.webant.ru/"
+
 @Module(includes = [ContextModule::class])
 class RetrofitModule {
-
-    // TODO Желательно хранить не в поле, а константах
-    private val BASE_URL: String = "http://gallery.dev.webant.ru/api/"
-
-    // TODO Подключи Chuck Interceptor
 
     @Provides
     @Singleton
@@ -25,7 +23,8 @@ class RetrofitModule {
         return OkHttpClient.Builder()
             .callTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-//            .addInterceptor(AuthInterceptor(context))
+            .addInterceptor(ChuckInterceptor(context))
+            .addInterceptor(AuthInterceptor(context))
             .build()
     }
 

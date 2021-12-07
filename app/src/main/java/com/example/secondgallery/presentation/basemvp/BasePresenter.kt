@@ -1,7 +1,6 @@
 package com.example.secondgallery.presentation.basemvp
 
 import android.app.Application
-import android.content.Context
 import com.example.domain.entity.PhotoModel
 import com.example.domain.gateway.PhotoGateway
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,6 +12,7 @@ abstract class BasePresenter<V : BaseView>(
     private val context: Application,
     var new: String?,
     var popular: String?,
+    val user: String? = null,
     private val photoGateway: PhotoGateway
 ) : MvpPresenter<V>() {
 
@@ -21,7 +21,6 @@ abstract class BasePresenter<V : BaseView>(
     private var page: Int = 1
     private var isLastPage = false
     private val compositeDisposable = CompositeDisposable()
-
 
     override fun onFirstViewAttach() {
         viewState.initViews()
@@ -54,7 +53,7 @@ abstract class BasePresenter<V : BaseView>(
             return
         }
 
-        photoGateway.getPhotos(new, popular, page)
+        photoGateway.getPhotos(new, popular, page, user)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -83,7 +82,7 @@ abstract class BasePresenter<V : BaseView>(
 
     private fun getFirstPhotos(isNeedSwipeRefresh: Boolean) {
 
-        photoGateway.getPhotos(new, popular, page)
+        photoGateway.getPhotos(new, popular, page, user)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -101,6 +100,37 @@ abstract class BasePresenter<V : BaseView>(
                 if (isNeedSwipeRefresh) {
                     viewState.changeSwipeRefreshState(false)
                 }
+            }
+            .subscribe({
+                photos.addAll(it.data as ArrayList<PhotoModel>)
+                viewState.addNewItems()
+            }, {
+                it.printStackTrace()
+                photos.clear()
+                viewState.changeProgressViewState(false)
+                viewState.changePlaceholderVisibility(false)
+            })
+            .let(compositeDisposable::add)
+    }
+
+    fun getData (name: String) {
+        photos.clear()
+        getSearchPhotos(name)
+    }
+
+    private fun getSearchPhotos (name: String) {
+        photoGateway.getSearchablePhotos(name)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                isLoading = true
+                viewState.changePlaceholderVisibility(true)
+            }
+            .doOnSuccess {
+                page++
+            }
+            .doFinally {
+                isLoading = false
             }
             .subscribe({
                 photos.addAll(it.data as ArrayList<PhotoModel>)

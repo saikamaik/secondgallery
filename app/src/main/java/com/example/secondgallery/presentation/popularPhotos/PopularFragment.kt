@@ -6,45 +6,54 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.secondgallery.App
 import com.example.secondgallery.R
+import com.example.secondgallery.databinding.FragmentPopularBinding
+import com.example.secondgallery.databinding.FragmentSignupBinding
 import com.example.secondgallery.presentation.basemvp.BaseFragment
-import moxy.MvpAppCompatFragment
+import com.example.secondgallery.utils.PhotoType
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-// TODO Лучше создать enum class для типов new и popular
-class PopularFragment : PopularView, BaseFragment<PopularView, PopularPresenter>("popular") {
 
-        @InjectPresenter
-        override lateinit var presenter: PopularPresenter
+class PopularFragment : PopularView,
+    BaseFragment<PopularView, PopularPresenter, FragmentPopularBinding>(PhotoType.Popular.raw) {
 
-        @ProvidePresenter
-        fun providePresenter(): PopularPresenter = App.appComponent.providePopularPresenter()
+    @InjectPresenter
+    override lateinit var presenter: PopularPresenter
 
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            return inflater.inflate(R.layout.fragment_popular, container, false)
-        }
+    @ProvidePresenter
+    fun providePresenter(): PopularPresenter = App.appComponent.providePopularPresenter()
 
-        override fun initViews() {
-            recyclerView = requireView().findViewById(R.id.recyclerViewPopular)
-            swipeRefreshLayout = requireView().findViewById(R.id.swiperefresh)
-            placeholder = requireView().findViewById(R.id.popularPlaceholder)
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        return inflater.inflate(R.layout.fragment_popular, container, false)
+//    }
 
-            swipeRefreshLayout.setOnRefreshListener {
-                presenter.onSwipeRefresh()
-                swipeRefreshLayout.isRefreshing = false
-            }
-
-            swipeRefreshLayout.setColorScheme(
-                R.color.white,
-                R.color.black
-            )
-
-            progressBar = requireView().findViewById(R.id.progressbar)
-        }
-        // TODO Отступы
-
-
+    override fun initializeBinding(): FragmentPopularBinding {
+        return FragmentPopularBinding.inflate(layoutInflater)
     }
+
+    override fun initViews() {
+        recyclerView = requireView().findViewById(R.id.recyclerViewPopular)
+        swipeRefreshLayout = requireView().findViewById(R.id.swiperefresh)
+        placeholder = requireView().findViewById(R.id.popularPlaceholder)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            presenter.onSwipeRefresh()
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+        swipeRefreshLayout.setColorScheme(
+            R.color.white,
+            R.color.black
+        )
+
+        progressBar = requireView().findViewById(R.id.progressbar)
+    }
+
+//    override fun getSearchablePhotos (name: String) {
+//        presenter.getData(name)
+//    }
+
+}

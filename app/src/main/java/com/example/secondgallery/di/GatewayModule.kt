@@ -1,16 +1,12 @@
-package com.di // TODO Следи за пакетами
+package com.example.secondgallery.di
 
 import com.example.domain.gateway.LoginGateway
-import dagger.Module
-import dagger.Provides
-import com.example.gateway.remoteDataSource.GalleryApi
 import com.example.domain.gateway.PhotoGateway
 import com.example.gateway.repository.RetrofitLoginGateway
 import com.example.gateway.repository.RetrofitPhotoGateway
 import dagger.Binds
+import dagger.Module
 import javax.inject.Singleton
-
-// TODO следи за импортами
 
 @Module(includes = [ApiModule::class])
 abstract class GatewayModule {
@@ -19,9 +15,8 @@ abstract class GatewayModule {
     @Singleton
     abstract fun providePhotoGateway(gateway: RetrofitPhotoGateway): PhotoGateway
 
-//    @Provides
-//    @Singleton
-//    fun provideLoginGateway(api: GalleryApi): LoginGateway {
-//        return RetrofitLoginGateway(api)
-//    }
+    @Binds
+    @Singleton
+    abstract fun provideLoginGateway(gateway: RetrofitLoginGateway): LoginGateway
+
 }

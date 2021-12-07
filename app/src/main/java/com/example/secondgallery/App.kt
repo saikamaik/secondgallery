@@ -1,7 +1,7 @@
 package com.example.secondgallery
 
 import android.app.Application
-import com.di.AppModule
+import com.example.secondgallery.di.AppModule
 import com.example.secondgallery.di.AppComponent
 import com.example.secondgallery.di.DaggerAppComponent
 

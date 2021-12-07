@@ -4,46 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.secondgallery.R
-import com.example.secondgallery.presentation.signin.SignInFragment
-import com.example.secondgallery.presentation.signup.SignUpFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import moxy.MvpAppCompatFragment
+import com.example.secondgallery.databinding.FragmentWelcomeBinding
+import kotlinx.android.synthetic.main.fragment_signin.button_sign_up
+import kotlinx.android.synthetic.main.fragment_welcome.*
 
-class WelcomeFragment: Fragment() {
+class WelcomeFragment : Fragment() {
 
-    private lateinit var signUpButton: Button
-    lateinit var signInButton: Button
+    private var _binding: FragmentWelcomeBinding? = null
+    private val binding
+        get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_welcome, container, false)
+        _binding = FragmentWelcomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        signUpButton = view.findViewById(R.id.button_sign_up)
-        signInButton = view.findViewById(R.id.button_sign_in)
-
-        signUpButton.setOnClickListener {
-            val signUpFragment = SignUpFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, signUpFragment)
-                .commit()
+        button_sign_up.setOnClickListener {
+            findNavController().navigate(R.id.signUpFragment)
         }
 
-        signInButton.setOnClickListener {
-            val signInFragment = SignInFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, signInFragment)
-                .commit()
+        button_sign_in.setOnClickListener {
+            findNavController().navigate(R.id.signInFragment)
         }
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

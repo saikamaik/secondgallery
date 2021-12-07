@@ -4,51 +4,55 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.secondgallery.R
-import com.squareup.picasso.Picasso
+import com.example.secondgallery.databinding.FragmentPhotoinfoBinding
+import com.example.secondgallery.di.BASE_URL
+import com.example.secondgallery.presentation.basemvp.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_photoinfo.*
 
-// TODO проверить форматирование всех файлов
 class ImageDetailFragment : Fragment() {
+
+    private var _binding: FragmentPhotoinfoBinding? = null
+    private val binding
+        get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_photoinfo, container, false)
+        _binding = FragmentPhotoinfoBinding.inflate(inflater, container, false)
+        return binding.root
+
     }
 
-
-    // TODO желательно иметь много маленьких методов, вместо одного большого
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toolbar: Toolbar = view.findViewById(R.id.toolbar) as Toolbar
+        requireActivity().navigationView.visibility = View.GONE
 
-        // TODO Перечёркнутое = deprecated, старайся не использовать депрекейтед
-        toolbar.setNavigationOnClickListener{ fragmentManager?.beginTransaction()?.remove(this)?.commit()}
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
-        // TODO вынести все строки в константы
-        val imgLink : String? = arguments?.getString("imageLink")
-        val img: ImageView = view.findViewById(R.id.image_detail)
+        setUpUI()
 
-        val imgDate: TextView = view.findViewById(R.id.image_date_create)
-        imgDate.text = arguments?.getString("imageDateCreate")
+    }
 
-        val imgDescr: TextView = view.findViewById(R.id.image_description)
-        imgDescr.text = arguments?.getString("imageDescription")
+    private fun setUpUI() {
 
-        val imgName: TextView = view.findViewById((R.id.image_name))
-        imgName.text = arguments?.getString("imageName")
+        val imgLink: String? = arguments?.getString(IMAGE_LINK)
+        image_date_create.text = arguments?.getString(IMAGE_DATE_CREATION)
+        image_description.text = arguments?.getString(IMAGE_DESCRIPTION)
+        image_name.text = arguments?.getString(IMAGE_NAME)
+        image_username.text = arguments?.getString(IMAGE_USERNAME)
         Glide
             .with(this)
-            .load("http://gallery.dev.webant.ru/media/$imgLink") // TODO вынести ссылку в константы
-            .into(img)
+            .load(BASE_URL + "media/$imgLink")
+            .into(image_detail)
 
     }
 }

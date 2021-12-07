@@ -5,14 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 import com.example.domain.entity.PhotoModel
 import com.example.secondgallery.R
+import com.squareup.picasso.Picasso
 
 class RecyclerAdapter(
     private val photos: List<PhotoModel>,
-    private val callback: MyViewHolder.Callback
+    private val callback: Callback
 ) : RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -24,17 +23,17 @@ class RecyclerAdapter(
 
     override fun getItemCount() = photos.size
 
+    interface Callback {
+        fun onImageClicked(item: PhotoModel)
+    }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(photos[position])
     }
 
+
     class MyViewHolder(listItemView: View, private val callback: Callback) :
         RecyclerView.ViewHolder(listItemView) {
-
-        // TODO Желательно объявлять коллбек на уровне adapter'a
-        interface Callback {
-            fun onImageClicked(item: PhotoModel)
-        }
 
         private val firstImg: ImageView = itemView.findViewById(R.id.img)
 

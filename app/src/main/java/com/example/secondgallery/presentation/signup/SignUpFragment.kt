@@ -1,47 +1,48 @@
 package com.example.secondgallery.presentation.signup
 
-import android.R.attr.password
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.domain.entity.login.User
+import com.example.secondgallery.App
 import com.example.secondgallery.R
 import com.example.secondgallery.Validator
-import com.example.secondgallery.presentation.homePage.HomeFragment
-import com.example.secondgallery.presentation.signin.SignInFragment
+import com.example.secondgallery.databinding.FragmentSignupBinding
+import com.example.secondgallery.presentation.signin.SignInView
 import com.example.secondgallery.presentation.welcome.WelcomeFragment
-import com.google.android.material.textfield.TextInputLayout
+import com.example.secondgallery.utils.DateUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_signup.*
+import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import java.util.*
-import java.util.regex.Pattern
 
-class SignUpFragment: Fragment() {
+class SignUpFragment : MvpAppCompatFragment(), SignUpView {
+
+    @InjectPresenter
+    lateinit var presenter: SignUpPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): SignUpPresenter = App.appComponent.provideSignUpPresenter()
 
     private val welcomeFragment = WelcomeFragment()
-    private lateinit var toolBarTextView: TextView
-    private lateinit var signInButton: AppCompatButton
-    private lateinit var signUpButton: AppCompatButton
-    private lateinit var usernameEditText: EditText
-    private lateinit var birthdayEditText: EditText
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var confirmPasswordEditText: EditText
-    private lateinit var confirmPasswordTextInputLayout: TextInputLayout
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar // TODO Старайся не использовать полные пути к классам
     private lateinit var validate: Validator
+
+    private var _binding: FragmentSignupBinding? = null
+    private val binding
+        get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_signup, container, false)
+        _binding = FragmentSignupBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,56 +52,38 @@ class SignUpFragment: Fragment() {
 
         requireActivity().navigationView.visibility = View.GONE
 
-        usernameEditText = view.findViewById(R.id.et_username)
-        birthdayEditText = view.findViewById(R.id.et_birthday)
-        emailEditText = view.findViewById(R.id.et_email)
-        passwordEditText = view.findViewById(R.id.et_password)
-        confirmPasswordEditText = view.findViewById(R.id.et_confirm_password)
-
-        confirmPasswordTextInputLayout = view.findViewById(R.id.tl_confirm_password)
-
-        signInButton = view.findViewById(R.id.button_sign_in)
-        signUpButton = view.findViewById(R.id.button_sign_up)
-
-        var username: String = usernameEditText.text.toString()
-        var birthday: Date
-        var email: String = emailEditText.text.toString()
-        val password: String = passwordEditText.text.toString()
-        val confirmPassword: String = confirmPasswordEditText.text.toString()
-
-        toolbar = view.findViewById(R.id.toolbar_cancel)
-        toolBarTextView = view.findViewById(R.id.tv_toolbar)
-        toolBarTextView.setOnClickListener{
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, welcomeFragment)
-                .commit()
+        tv_toolbar.setOnClickListener {
+            findNavController().navigate(R.id.welcomeFragment)
         }
 
-        signInButton.setOnClickListener {
-            // TODO navigation component
-            val signInFragment = SignInFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, signInFragment)
-                .commit()
+        button_sign_in.setOnClickListener {
+            findNavController().navigate(R.id.signInFragment)
         }
 
+        button_sign_up.setOnClickListener {
 
-        signUpButton.setOnClickListener {
-
-            if (confirmPasswordEditText.text.toString() != passwordEditText.text.toString()) {
-                confirmPasswordTextInputLayout.error = "Пароли не совпадают"
-            } else if (validate.validateEmail(emailEditText)
-                    and validate.validatePassword(passwordEditText) // TODO желательно использовать && и ||
-                    and validate.validateUsername(usernameEditText)
-                ) {
-                    val homeFragment = HomeFragment()
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.fl_container, homeFragment)
-                        .commit()
-                }
+            if (et_confirm_password.text.toString() != et_password.text.toString()) {
+                tl_confirm_password.error = "Пароли не совпадают"
+            } else if (validate.validateEmail(et_email)
+                && validate.validatePassword(et_password)
+                && validate.validateUsername(et_username)
+            ) {
+                presenter.postUser(
+                    user = User(
+                        null,
+                        et_email.text.toString(),
+                        et_username.text.toString(),
+                        DateUtils.convertFromStringToDate(et_birthday.text.toString()),
+                        et_password.text.toString()
+                    ), requireContext()
+                )
             }
         }
-
-
     }
+
+    override fun navigateToHomeFragment() {
+        findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
+    }
+
+}
 

@@ -48,10 +48,10 @@ class Validator {
         val password: String = passwordEditText.text.toString()
 
         return if (password.isEmpty()) {
-            setError(passwordEditText,"Поле не может быть пустым")
+            setError(passwordEditText, "Поле не может быть пустым")
             false
         } else if (!passwordPattern.matcher(password).matches()) {
-            setError(passwordEditText,"Слабый пароль")
+            setError(passwordEditText, "Слабый пароль")
             false
         } else {
             setError(passwordEditText, null)

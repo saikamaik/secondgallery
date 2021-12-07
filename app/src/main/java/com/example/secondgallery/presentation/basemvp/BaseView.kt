@@ -6,7 +6,7 @@ import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
-interface BaseView: MvpView {
+interface BaseView : MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun addExtraItems(position: Int, quantity: Int)
@@ -27,9 +27,8 @@ interface BaseView: MvpView {
     fun changeProgressViewState(isLoading: Boolean)
 
     @StateStrategyType(AddToEndSingleStrategy::class)
-    fun changePlaceholderVisibility(IsNetworkAvailable: Boolean)
+    fun changePlaceholderVisibility(isNetworkAvailable: Boolean)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun navigateToImageDetailFragment(photoModel: PhotoModel)
-
 }

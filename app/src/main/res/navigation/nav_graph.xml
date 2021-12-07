@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.secondgallery.presentation.welcome.WelcomeFragment"
+        android:label="WelcomeFragment">
+        <action
+            android:id="@+id/action_welcomeFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.secondgallery.presentation.signin.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.secondgallery.presentation.signup.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.secondgallery.presentation.homePage.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_imageDetailFragment"
+            app:destination="@id/imageDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageDetailFragment"
+        android:name="com.example.secondgallery.presentation.imageDetail.ImageDetailFragment"
+        android:label="ImageDetailFragment" />
+    <fragment
+        android:id="@+id/addPhotoFragment"
+        android:name="com.example.secondgallery.presentation.addPhoto.AddPhotoFragment"
+        android:label="AddPhotoFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.secondgallery.presentation.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <dialog
+        android:id="@+id/bottom_sheet"
+        android:name="com.example.secondgallery.BottomSheetFragment"
+        android:label="BottomSheetFragment" >
+        <action
+            android:id="@+id/action_bottomSheetFragment_to_addPhotoFragment"
+            app:destination="@id/addPhotoFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.secondgallery.presentation.profile.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+</navigation>

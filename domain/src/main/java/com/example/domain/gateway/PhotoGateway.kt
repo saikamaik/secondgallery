@@ -5,5 +5,7 @@ import io.reactivex.Single
 
 interface PhotoGateway {
 
-    fun getPhotos(new: String?, popular: String?, page: Int): Single<APIResponse>
+    fun getPhotos(new: String?, popular: String?, page: Int, user: String?): Single<APIResponse>
+
+    fun getSearchablePhotos(name: String) : Single<APIResponse>
 }

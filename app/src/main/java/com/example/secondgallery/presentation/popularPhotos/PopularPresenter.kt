@@ -8,5 +8,5 @@ import javax.inject.Inject
 
 @InjectViewState
 class PopularPresenter @Inject constructor(photoGateway: PhotoGateway) :
-    BasePresenter<PopularView>(context = Application(),null, "true", photoGateway) {
+    BasePresenter<PopularView>(context = Application(), null, "true", null, photoGateway) {
 }

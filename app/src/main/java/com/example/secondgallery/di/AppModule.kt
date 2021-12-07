@@ -1,4 +1,4 @@
-package com.di
+package com.example.secondgallery.di
 
 import com.example.secondgallery.App
 import dagger.Module

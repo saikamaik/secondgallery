@@ -18,7 +18,8 @@
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:background="@drawable/icon_settings"
-            android:layout_marginStart="310dp"
+            android:layout_gravity="right"
+            android:layout_marginEnd="16dp"
             />
 
     </androidx.appcompat.widget.Toolbar>
@@ -35,7 +36,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="21dp"
-        app:layout_constraintTop_toTopOf="@id/view1"
+        app:layout_constraintTop_toBottomOf="@id/view1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -70,6 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintTop_toBottomOf="@id/tv_username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,6 +95,13 @@
         app:layout_constraintStart_toEndOf="@id/tv_views"
         app:layout_constraintTop_toBottomOf="@id/tv_birthday"/>
 
+    <TextView
+        android:id="@+id/tv_count_of_loaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_birthday"
+        app:layout_constraintStart_toEndOf="@id/tv_loaded"/>
+
     <View
         android:id="@+id/view2"
         android:background="#C4C4C4"
@@ -105,9 +114,9 @@
         android:id="@+id/swiperefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingTop="4dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view2">
@@ -120,7 +129,54 @@
             android:paddingBottom="6dp"
             android:clipToPadding="false"/>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profilePlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/no_internet_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/webant_logo_transparent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_sorry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sorry!"
+                android:textSize="17sp"
+                android:textColor="#C4C4C4"
+                app:layout_constraintTop_toBottomOf="@id/no_internet_image"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_nointernet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_sorry"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textSize="12sp"
+                android:textColor="#C4C4C4"
+                android:text="There is no pictures.\n
+Pleace come back later."
+                android:gravity="center"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -128,12 +184,13 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:indeterminate="true"
+        android:visibility="invisible"
         android:indeterminateTint="@color/gray"
         android:indeterminateTintMode="src_atop"
         android:paddingBottom="53dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

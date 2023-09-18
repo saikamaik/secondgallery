@@ -3,10 +3,11 @@ package com.example.gateway.repository
 import com.example.domain.entity.login.Client
 import com.example.domain.entity.login.LoginResponse
 import com.example.domain.entity.login.User
+import com.example.domain.entity.login.UserPassword
 import com.example.domain.gateway.LoginGateway
 import com.example.gateway.remoteDataSource.GalleryApi
 import io.reactivex.Single
-import java.util.*
+import retrofit2.Call
 import javax.inject.Inject
 
 class RetrofitLoginGateway @Inject constructor(private val api: GalleryApi) : LoginGateway {
@@ -35,7 +36,7 @@ class RetrofitLoginGateway @Inject constructor(private val api: GalleryApi) : Lo
     }
 
     override fun postUser(
-        email: String?, username: String, password: String, birthday: Date?
+        email: String?, username: String, password: String, birthday: String?
     ): Single<User> {
         return api.postUser(
             body = User(
@@ -52,7 +53,7 @@ class RetrofitLoginGateway @Inject constructor(private val api: GalleryApi) : Lo
         id: Int,
         email: String?,
         username: String,
-        birthday: Date?
+        birthday: String?
     ): Single<User> {
         return api.editUser(
             id,
@@ -66,8 +67,35 @@ class RetrofitLoginGateway @Inject constructor(private val api: GalleryApi) : Lo
         )
     }
 
+    override fun changePassword(
+        id: Int,
+        oldPassword: String,
+        newPassword: String
+    ): Single<UserPassword> {
+        return api.changePassword(
+            id,
+            UserPassword(oldPassword, newPassword)
+        )
+    }
+
+    override fun getRefresh(
+        client_id: String?,
+        refresh_token: String?,
+        client_secret: String?
+    ): Single<LoginResponse> {
+        return api.getRefresh(client_id, refresh_token, client_secret)
+    }
+
     override fun getCurrentUser(): Single<User> {
         return api.getCurrentUser()
+    }
+
+    override fun deleteUser(id: Int): Call<Void> {
+        return api.deleteUser(id)
+    }
+
+    override fun deleteClient(id: Int): Call<Void> {
+        return api.deleteClient(id)
     }
 
 }

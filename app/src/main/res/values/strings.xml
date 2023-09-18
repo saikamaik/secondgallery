@@ -28,7 +28,7 @@
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="you_can_delete_your_account">You can delete your account</string>
+    <string name="you_can_delete_your_account">You can <font color='#CF497E'>delete your account</font></string>
     <string name="sign_out">Sign Out</string>
     <string name="popular">Popular</string>
     <string name="_999">+999</string>
@@ -41,4 +41,10 @@
     <string name="make_photo">Make Photo</string>
     <string name="select_in_gallery">Select in gallery</string>
     <string name="select">Select:</string>
+    <string name="password_changed">Данные пароля успешно изменены</string>
+    <string name="data_changed">Данные успешно изменены</string>
+    <string name="wrong_old_password">Неправильный старый пароль</string>
+    <string name="error">Error</string>
+    <string name="error_sign_in">Возникла ошибка, перепроверьте данные и попробуйте позднее</string>
+    <string name="image_uploaded">Изображение было загружено</string>
 </resources>

@@ -4,24 +4,21 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.secondgallery.databinding.BottomSheetBinding
-import com.example.secondgallery.databinding.FragmentSignupBinding
-import com.example.secondgallery.presentation.addPhoto.AddPhotoFragment
+import com.example.secondgallery.utils.Const.IMAGE
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet.*
-import java.io.InputStream
 
-const val IMAGE = "Image"
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -33,50 +30,68 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = BottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpListeners()
+    }
 
-
-        button_make_photo.setOnClickListener {
+    private fun setUpListeners() {
+        binding.buttonMakePhoto.setOnClickListener {
             ImagePicker.with(this)
-                .maxResultSize(1080, 1080)
+                .compress(1024)
                 .cameraOnly()
-                .createIntent {
-                    intent -> startForProfileImageResult.launch(intent)
+                .saveDir(requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM)!!)
+                .createIntent { intent ->
+                    startForProfileImageResult.launch(intent)
                 }
-            findNavController().navigate(R.id.addPhotoFragment)
         }
 
-        button_select_photo.setOnClickListener {
+        binding.buttonSelectPhoto.setOnClickListener {
             ImagePicker.with(this)
-                .maxResultSize(1080, 1080)
+                .compress(1024)
                 .galleryOnly()
-                .createIntent {
-                    intent -> startForProfileImageResult.launch(intent)
+                .createIntent { intent ->
+                    startForProfileImageResult.launch(intent)
                 }
-            findNavController().navigate(R.id.addPhotoFragment)
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val imageUri: Uri = data?.data!!
+                data.putExtra("result", imageUri)
+            }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private val startForProfileImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val resultCode = result.resultCode
-            val data = result.data
-
             if (resultCode == Activity.RESULT_OK) {
-                //Image Uri will not be null for RESULT_OK
-                val addPhotoFragment = AddPhotoFragment()
                 val data: Intent? = result.data
                 val args = Bundle()
-                val imageUri: Uri = data?.data!!
+                val imageUri: Uri? = data?.data
                 args.putString(IMAGE, imageUri.toString())
-                addPhotoFragment.arguments = args
-                findNavController().navigate(R.id.addPhotoFragment)}
+                Handler(Looper.getMainLooper()).post {
+                    findNavController().navigate(
+                        R.id.addPhotoFragment, args
+                    )
+                }
+            }
         }
-
 }

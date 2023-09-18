@@ -18,5 +18,4 @@ abstract class GatewayModule {
     @Binds
     @Singleton
     abstract fun provideLoginGateway(gateway: RetrofitLoginGateway): LoginGateway
-
 }

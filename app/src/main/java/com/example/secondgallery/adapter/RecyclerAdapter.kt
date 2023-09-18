@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.entity.PhotoModel
+import com.example.domain.entity.photo.PhotoModel
 import com.example.secondgallery.R
+import com.example.secondgallery.utils.Const.MEDIA_URL
 import com.squareup.picasso.Picasso
 
-class RecyclerAdapter(
+open class RecyclerAdapter(
     private val photos: List<PhotoModel>,
     private val callback: Callback
 ) : RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>() {
@@ -31,7 +32,6 @@ class RecyclerAdapter(
         holder.bind(photos[position])
     }
 
-
     class MyViewHolder(listItemView: View, private val callback: Callback) :
         RecyclerView.ViewHolder(listItemView) {
 
@@ -43,7 +43,7 @@ class RecyclerAdapter(
             }
 
             Picasso.get()
-                .load("http://gallery.dev.webant.ru/media/${photo.image.name}")
+                .load(MEDIA_URL + (photo.image?.name))
                 .resize(1000, 1000)
                 .centerInside()
                 .into(firstImg)

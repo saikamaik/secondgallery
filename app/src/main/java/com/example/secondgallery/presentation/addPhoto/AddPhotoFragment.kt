@@ -1,72 +1,99 @@
 package com.example.secondgallery.presentation.addPhoto
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.Environment
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.secondgallery.IMAGE
+import com.example.secondgallery.App
 import com.example.secondgallery.R
 import com.example.secondgallery.databinding.FragmentAddphotoBinding
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_addphoto.*
+import com.example.secondgallery.presentation.basemvp.BaseFragment
+import com.example.secondgallery.utils.Const.IMAGE
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.time.LocalDateTime
 
-class AddPhotoFragment : Fragment() {
+class AddPhotoFragment : BaseFragment<AddPhotoView, AddPhotoPresenter, FragmentAddphotoBinding>(),
+    AddPhotoView {
 
-    private var _binding: FragmentAddphotoBinding? = null
-    private val binding
-        get() = _binding!!
+    @InjectPresenter
+    override lateinit var presenter: AddPhotoPresenter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAddphotoBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    @ProvidePresenter
+    fun providePresenter(): AddPhotoPresenter = App.appComponent.provideAddPhotoPresenter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+/*        requireActivity().navigationView.visibility = View.GONE*/
+        setUpUi()
+    }
 
-        requireActivity().navigationView.visibility = View.GONE
+    @SuppressLint("NewApi")
+    private fun setUpUi() {
 
-        toolbar.setOnClickListener {
+        binding.toolbar.setOnClickListener {
             findNavController().navigate(R.id.homeFragment)
         }
 
-    }
+        val uriString: String = arguments?.getString(IMAGE).toString()
+        val uri: Uri = Uri.parse(uriString)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        var photoTypeNew: Boolean = false
-        var photoTypePopular: Boolean = false
-        var image: String
-
-        Glide
-            .with(this)
-            .load(arguments?.getString(IMAGE)!!)
-            .into(image_add)
-
-        switch_new.setOnCheckedChangeListener { buttonView, isChecked ->
-            photoTypeNew = isChecked
+        context?.let {
+            Glide.with(it)
+                .load(uri)
+                .into(binding.imageAdd)
         }
 
-//        var photo: PhotoModel = PhotoModel(
-//            id,
-//            imageName,
-//            LocalDateTime.now().toString(),
-//            imageDescription,
-//            photoTypeNew,
-//            photoTypePopular,
-//            image,
-//            user
-//        )
+        val file = File(
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM),
+            File(uri.toString()).name
+        )
 
+        val filePart: MultipartBody.Part = MultipartBody.Part.createFormData(
+        "file",
+        file.name,
+        RequestBody.create(MediaType.parse("image/*"), file)
+    )
+
+        binding.switchNew.setOnCheckedChangeListener { _, isChecked ->
+            presenter.photoTypeNew = isChecked
+        }
+
+        binding.switchPopular.setOnCheckedChangeListener { _, isChecked ->
+            presenter.photoTypePopular = isChecked
+        }
+
+        binding.buttonAdd.setOnClickListener {
+            presenter.postPhoto(
+                filePart,
+                binding.etName.text.toString(),
+                binding.etDescription.text.toString(),
+                LocalDateTime.now().toString(),
+                presenter.photoTypeNew,
+                presenter.photoTypePopular
+            )
+        }
     }
 
+    override fun showToast(id: Int) {
+        Toast.makeText(this.requireContext(), id, Toast.LENGTH_LONG)
+            .show()
+        findNavController().navigate(R.id.homeFragment)
+    }
+
+    override fun initializeBinding(): FragmentAddphotoBinding {
+        return FragmentAddphotoBinding.inflate(layoutInflater)
+    }
+
+    override fun setUpListeners() {
+    }
 
 }

@@ -8,7 +8,7 @@ import java.util.*
 object DateUtils {
 
     @JvmStatic
-    public fun checkDateFormat(date: String): String {
+    fun checkDateFormat(date: String): String {
         var sdf = SimpleDateFormat("-yyyy-mm-dd'T'HH:MM:ss", Locale.getDefault())
 
         try {
@@ -30,9 +30,9 @@ object DateUtils {
 
     @SuppressLint("SimpleDateFormat")
     @JvmStatic
-    public fun convertFromStringToDate(date: String?) : Date? {
-        if (date!=null) return null
-        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        return format.parse(date)
+    fun convertFromStringToDate(date: String): String {
+        val parser = SimpleDateFormat("dd-mm-yyyy")
+        val formatter = SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss")
+        return formatter.format(parser.parse(date))
     }
 }

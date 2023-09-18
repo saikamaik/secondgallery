@@ -1,58 +1,64 @@
 package com.example.secondgallery.presentation.imageDetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.secondgallery.App
+import com.example.secondgallery.R
 import com.example.secondgallery.databinding.FragmentPhotoinfoBinding
-import com.example.secondgallery.di.BASE_URL
-import com.example.secondgallery.presentation.basemvp.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_photoinfo.*
+import com.example.secondgallery.presentation.basemvp.BaseFragment
+import com.example.secondgallery.utils.Const.BASE_URL
+import com.example.secondgallery.utils.Const.IMAGE_DATE_CREATION
+import com.example.secondgallery.utils.Const.IMAGE_DESCRIPTION
+import com.example.secondgallery.utils.Const.IMAGE_LINK
+import com.example.secondgallery.utils.Const.IMAGE_NAME
+import com.example.secondgallery.utils.Const.IMAGE_USERNAME
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
-class ImageDetailFragment : Fragment() {
+class ImageDetailFragment :
+    BaseFragment<ImageDetailView, ImageDetailPresenter, FragmentPhotoinfoBinding>(),
+    ImageDetailView {
 
-    private var _binding: FragmentPhotoinfoBinding? = null
-    private val binding
-        get() = _binding!!
+    @InjectPresenter
+    override lateinit var presenter: ImageDetailPresenter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentPhotoinfoBinding.inflate(inflater, container, false)
-        return binding.root
+    @ProvidePresenter
+    fun providePresenter(): ImageDetailPresenter = App.appComponent.provideImageDetailPresenter()
 
-    }
+
+    var viewType: Int? = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().navigationView.visibility = View.GONE
 
-        toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        /*requireActivity().navigationView.visibility = View.GONE*/
+        setUpListeners()
+
+        binding.toolbar.setNavigationOnClickListener {
+            when (viewType) {
+                1 -> findNavController().navigate(R.id.homeFragment)
+                2 -> findNavController().navigate(R.id.profileFragment)
+            }
         }
-
-        setUpUI()
-
     }
 
-    private fun setUpUI() {
-
+    override fun setUpListeners() {
+        viewType = arguments?.getInt("viewType")
         val imgLink: String? = arguments?.getString(IMAGE_LINK)
-        image_date_create.text = arguments?.getString(IMAGE_DATE_CREATION)
-        image_description.text = arguments?.getString(IMAGE_DESCRIPTION)
-        image_name.text = arguments?.getString(IMAGE_NAME)
-        image_username.text = arguments?.getString(IMAGE_USERNAME)
+        binding.imageDateCreate.text = arguments?.getString(IMAGE_DATE_CREATION)
+        binding.imageDescription.text = arguments?.getString(IMAGE_DESCRIPTION)
+        binding.imageName.text = arguments?.getString(IMAGE_NAME)
+        binding.imageUsername.text = arguments?.getString(IMAGE_USERNAME)
         Glide
             .with(this)
             .load(BASE_URL + "media/$imgLink")
-            .into(image_detail)
+            .into(binding.imageDetail)
+    }
 
+    override fun initializeBinding(): FragmentPhotoinfoBinding {
+        return FragmentPhotoinfoBinding.inflate(layoutInflater)
     }
 }

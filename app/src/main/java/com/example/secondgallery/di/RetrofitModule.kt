@@ -1,8 +1,13 @@
 package com.example.secondgallery.di
 
 import android.content.Context
-import com.example.secondgallery.authorization.AuthInterceptor
+import com.example.domain.gateway.LoginGateway
+import com.example.secondgallery.authorization.SessionManager
+import com.example.secondgallery.authorization.TokenAuthenticator
+import com.example.secondgallery.authorization.TokenInterceptor
+import com.example.secondgallery.utils.Const.BASE_URL
 import com.readystatesoftware.chuck.ChuckInterceptor
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -12,32 +17,48 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-// todo
-const val BASE_URL: String = "http://gallery.dev.webant.ru/"
-
-@Module(includes = [ContextModule::class])
+@Module(includes = [ContextModule::class, GatewayModule::class, AppModule::class])
 class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(context: Context): OkHttpClient {
+    fun provideOkHttpClient(
+        context: Context,
+        loginGateway: Lazy<LoginGateway>,
+        sessionManager: SessionManager
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .callTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(ChuckInterceptor(context))
-            .addInterceptor(AuthInterceptor(context))
+            .addInterceptorsAndAuthenticator(context, loginGateway, sessionManager)
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(context: Context): Retrofit {
+    fun provideRetrofit(httpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(provideOkHttpClient(context))
+            .addConvertAndCallAdapterFactory()
+            .client(httpClient)
             .build()
     }
 
 }
+
+fun OkHttpClient.Builder.addInterceptorsAndAuthenticator(
+    context: Context,
+    loginGateway: Lazy<LoginGateway>,
+    sessionManager: SessionManager
+): OkHttpClient.Builder {
+    return this.addInterceptor(ChuckInterceptor(context))
+        .addInterceptor(TokenInterceptor(sessionManager))
+        .authenticator(TokenAuthenticator(loginGateway, sessionManager))
+}
+
+fun Retrofit.Builder.addConvertAndCallAdapterFactory(): Retrofit.Builder {
+    return this.addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+}
+
+

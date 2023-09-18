@@ -2,6 +2,7 @@ package com.example.secondgallery
 
 import android.util.Patterns
 import android.widget.EditText
+import com.example.domain.entity.login.User
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 
@@ -48,13 +49,36 @@ class Validator {
         val password: String = passwordEditText.text.toString()
 
         return if (password.isEmpty()) {
-            setError(passwordEditText,"Поле не может быть пустым")
+            setError(passwordEditText, "Поле не может быть пустым")
             false
         } else if (!passwordPattern.matcher(password).matches()) {
-            setError(passwordEditText,"Слабый пароль")
+            setError(passwordEditText, "Слабый пароль")
             false
         } else {
             setError(passwordEditText, null)
+            true
+        }
+    }
+
+    fun validateSettings(
+        usernameEditText: EditText,
+        birthdayEditText: EditText,
+        emailEditText: EditText,
+        currentUser: User
+    ): Boolean {
+        return ((usernameEditText.text.toString() != currentUser.username) ||
+                birthdayEditText.text.toString().trim() != currentUser.birthday.toString() ||
+                emailEditText.text.toString() != currentUser.email)
+    }
+
+    fun validateDate(dateEditText: EditText): Boolean {
+        val date: String = dateEditText.text.toString()
+
+        return if (date.isEmpty()) {
+            setError(dateEditText, "Поле не может быть пустым")
+            false
+        } else {
+            setError(dateEditText, null)
             true
         }
     }

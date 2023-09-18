@@ -14,12 +14,58 @@
         android:background="@drawable/edittext_search"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:iconifiedByDefault="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:iconifiedByDefault="false"
         />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homePlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/no_internet_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/webant_logo_transparent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sorry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorry!"
+            android:textSize="17sp"
+            android:textColor="#C4C4C4"
+            app:layout_constraintTop_toBottomOf="@id/no_internet_image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_nointernet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_sorry"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="12sp"
+            android:textColor="#C4C4C4"
+            android:text="There is no pictures.\n
+Pleace come back later."
+            android:gravity="center"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -36,21 +82,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_bar"
         tools:ignore="MissingConstraints">
-
-<!--        <com.google.android.material.tabs.TabItem-->
-<!--            android:id="@+id/tabItem_new"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="New"-->
-<!--            android:layout_marginTop="15dp"/>-->
-
-<!--        <com.google.android.material.tabs.TabItem-->
-<!--            android:id="@+id/tabItem_popular"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/popular"-->
-<!--            android:layout_marginTop="15dp"/>-->
-
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "577013524529",
+    "project_id": "second-gallery",
+    "storage_bucket": "second-gallery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577013524529:android:48ada8be238af68dfe0d10",
+        "android_client_info": {
+          "package_name": "com.example.secondgallery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577013524529-d243bbtdjnhu3o0rn5oe6lgrscaolfsp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB87APyRwDNFcY0xo9B6p7KYwj7oHVWjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577013524529-d243bbtdjnhu3o0rn5oe6lgrscaolfsp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

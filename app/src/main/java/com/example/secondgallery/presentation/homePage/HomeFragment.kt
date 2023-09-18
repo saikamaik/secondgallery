@@ -1,57 +1,63 @@
 package com.example.secondgallery.presentation.homePage
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
-import com.example.secondgallery.R
+import com.example.secondgallery.App
+import com.example.secondgallery.databinding.FragmentHomeBinding
+import com.example.secondgallery.presentation.basemvp.BaseFragment
+import com.example.secondgallery.presentation.basemvp.basePhoto.BasePhotoFragment
 import com.example.secondgallery.tabs.TabsPagerAdapter
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
+import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
-private const val ARG_OBJECT = "object"
+class HomeFragment : BaseFragment<HomeView, HomePresenter, FragmentHomeBinding>(), HomeView {
 
-class HomeFragment: Fragment() {
+    @Inject
+    override lateinit var presenter: HomePresenter
 
-    lateinit var searchView: SearchView
+    @ProvidePresenter
+    fun providePresenter(): HomePresenter = App.appComponent.provideHomePresenter()
+
     private lateinit var adapter: TabsPagerAdapter
-    private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        requireActivity().navigationView.visibility = View.VISIBLE
 
-        requireActivity().navigationView.visibility = View.VISIBLE
+        val tabTitle = arrayOf("New", "Popular")
 
-        var tabTitle = arrayOf("New", "Popular")
-
-        searchView = view.findViewById(R.id.search_bar)
-        searchView.queryHint = "Search"
+        binding.searchBar.queryHint = "Search"
 
         adapter = TabsPagerAdapter(this)
-        viewPager = view.findViewById(R.id.tabs_viewpager)
-        viewPager.adapter = adapter
-
-        tabLayout = view.findViewById(R.id.tab_layout)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        binding.tabsViewpager.adapter = adapter
+        TabLayoutMediator(binding.tabLayout, binding.tabsViewpager) { tab, position ->
             tab.text = tabTitle[position]
         }.attach()
+
+        val searchView = binding.searchBar as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false;
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    val myFragment =
+                        childFragmentManager.findFragmentByTag("f" + binding.tabLayout.selectedTabPosition)
+                    (myFragment as BasePhotoFragment<*, *, *>).getSearchPhotos(newText)
+                }
+                return true
+            }
+        })
+    }
+
+    override fun initializeBinding(): FragmentHomeBinding {
+        return FragmentHomeBinding.inflate(layoutInflater)
+    }
+
+    override fun setUpListeners() {
 
     }
 

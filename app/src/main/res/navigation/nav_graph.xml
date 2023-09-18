@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.secondgallery.presentation.homePage.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_imageDetailFragment"
+            app:destination="@id/imageDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageDetailFragment"
+        android:name="com.example.secondgallery.presentation.imageDetail.ImageDetailFragment"
+        android:label="ImageDetailFragment" >
+        <action
+            android:id="@+id/action_imageDetailFragment_to_homeFragment"
+            app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_imageDetailFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPhotoFragment"
+        android:name="com.example.secondgallery.presentation.addPhoto.AddPhotoFragment"
+        android:label="AddPhotoFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.secondgallery.presentation.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <dialog
+        android:id="@+id/bottom_sheet"
+        android:name="com.example.secondgallery.BottomSheetFragment"
+        android:label="BottomSheetFragment" >
+        <action
+            android:id="@+id/action_bottom_sheet_to_addPhotoFragment"
+            app:destination="@id/addPhotoFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.secondgallery.presentation.profile.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_imageDetailFragment"
+            app:destination="@id/imageDetailFragment" />
+    </fragment>
+</navigation>

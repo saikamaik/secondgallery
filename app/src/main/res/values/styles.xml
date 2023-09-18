@@ -18,4 +18,8 @@
         <item name="android:paddingBottom">6dp</item>
     </style>
 
+    <style name="Widget.Support.CoordinatorLayout" parent="android:Widget">
+        @null
+    </style>
+
 </resources>
